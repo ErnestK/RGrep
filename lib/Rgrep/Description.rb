@@ -4,5 +4,10 @@ module Description
       out a from message as well.
       > $ cli hello "Yehuda Katz" "Carl Lerche"
       > from: Carl Lerche'
-  
+
+   LONGDESC_LIST = ''
+
+   LONGDESC_DIFF = ''
+
+   LONGDESC_FIND = ''
 end
