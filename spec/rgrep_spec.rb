@@ -49,11 +49,8 @@ describe Rgrep do
 			it 'run with arg name' do
 				expect(Rgrep.start(["find", PATH.to_s, "--name", "Diary"]).to_i).to eq( CLI_VALID_RESPONSE)
 			end
-			it 'run with arg name and show dir' do
-				expect(Rgrep.start(["find", PATH.to_s, "--name", "Diary", "--dir"]).to_i).to eq( CLI_VALID_RESPONSE)
-			end
-			it 'run with arg name and show dir and contents' do
-				expect(Rgrep.start(["find", PATH.to_s, "--name", "Diary", "--dir", "--contents"]).to_i).to eq( CLI_VALID_RESPONSE)
+			it 'run with arg name and show contents' do
+				expect(Rgrep.start(["find", PATH.to_s, "--name", "Diary", "--contents"]).to_i).to eq( CLI_VALID_RESPONSE)
 			end
 		end
 

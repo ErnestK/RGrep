@@ -76,9 +76,9 @@ class Rgrep < Thor
 		file1[:lines].each do |line|
 			cnt = cnt + 1
 			if options[:show_similar]
-				puts cnt.to_s + line if file2[:lines].include? line
+				puts cnt.to_s + ' ' + line if file2[:lines].include?( line)
 			else
-				puts cnt.to_s + line unless file2[:lines].include? line
+				puts cnt.to_s + ' ' + line unless file2[:lines].include?( line)
 			end
 		end
 
@@ -86,11 +86,11 @@ class Rgrep < Thor
 		puts "**************************************"
 		puts "File: #{_file2}"
 		file2[:lines].each do |line|
-			cnt = cnt + 1
+			cnt = cnt + 1      
 			if options[:show_similar]
-				puts cnt.to_s + line if file1[:lines].include? line
+				puts cnt.to_s + ' ' + line if file1[:lines].include?( line)
 			else
-				puts cnt.to_s + line unless file1[:lines].include? line
+				puts cnt.to_s + ' ' + line unless file1[:lines].include?( line)
 			end
 		end
 
@@ -106,7 +106,6 @@ class Rgrep < Thor
 	#{LONGDESC_FIND}
 	LONGDESC
 	option :name, :desc => 'Name of files to find', :banner => 'Name',:aliases => '-n', :required => true
-	option :dir, :desc => 'Search only for folders and file names', :aliases => '-dir'
 	option :contents, :type => :boolean, :desc => 'Search for containig items in files', :aliases => '-cs'
 	def find( _path)
 		@dir = {}
@@ -118,11 +117,10 @@ class Rgrep < Thor
 
 		incr_search( _path)
 
-		if options[:dir]
-			puts "Dir:"
-			puts @dir[:out].join("\n")
-		end
-		puts "*******************************************************" if options[:dir] && options[:contents]
+		puts "Dir:"
+		puts @dir[:out].join("\n")
+
+		puts "*******************************************************" if options[:contents]
 		if options[:contents]
 			puts "Into files:"
 			puts @contents[:out].join("\n")
@@ -135,6 +133,7 @@ class Rgrep < Thor
 		return -1
 	end
 
+  private
 	def incr_search( path)
 		if OS.windows?
 			path = path[-1,1] == '\\' ? path : path + '\\'   # for Win
