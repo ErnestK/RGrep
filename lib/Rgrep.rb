@@ -5,6 +5,7 @@ require File.join(File.dirname(__FILE__), 'Rgrep', 'Description.rb')
 
 class Rgrep < Thor
 	include Description
+
 	map "-l" => :list
 	map "-d" => :diff
 	map "-f" => :find
@@ -17,6 +18,8 @@ class Rgrep < Thor
 	option :less_than, :desc => 'Memory allocate, greater than param', :banner => 'Amount',:aliases => '-lt'
 	option :greater_than, :desc => 'Memory allocate, less than param', :banner => 'Amount',:aliases => '-gt'
 	def list
+		@result = 0
+
 		if OS.windows?
 			_memory_index = 4
 			list = `tasklist`
@@ -97,12 +100,13 @@ class Rgrep < Thor
 		puts "error = #{e}, backtrace = #{e.backtrace.join("\n")}"
 		return -1
 	end
+
 	desc "Search by names in dir/contents of files", "find --dir --contents '/home' --name 'Diary'"
 	long_desc <<-LONGDESC
 	#{LONGDESC_FIND}
 	LONGDESC
 	option :name, :desc => 'Name of files to find', :banner => 'Name',:aliases => '-n', :required => true
-	option :dir, :type => :boolean, :desc => 'Search only for folders and file names', :aliases => '-dir'
+	option :dir, :desc => 'Search only for folders and file names', :aliases => '-dir'
 	option :contents, :type => :boolean, :desc => 'Search for containig items in files', :aliases => '-cs'
 	def find( _path)
 		@dir = {}
@@ -131,7 +135,6 @@ class Rgrep < Thor
 		return -1
 	end
 
-	private
 	def incr_search( path)
 		if OS.windows?
 			path = path[-1,1] == '\\' ? path : path + '\\'   # for Win
@@ -154,7 +157,6 @@ class Rgrep < Thor
 			end
 		end
 	end
-
 end
 
 Rgrep.start(ARGV)
