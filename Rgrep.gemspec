@@ -1,11 +1,13 @@
 # -*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
+lib_dir = File.expand_path('lib',File.dirname(__FILE__))
+$LOAD_PATH << lib_dir unless $LOAD_PATH.include?(lib_dir)
 require "Rgrep/version"
 
 Gem::Specification.new do |s|
   s.name        = "Rgrep"
-  s.version     = Mygem::VERSION
+  s.version     = Rgrep::VERSION
   s.platform    = Gem::Platform::RUBY
+  s.license     = "MIT"
   s.authors     = ["Ernest Khasanzhinov"]
   s.email       = ["khasanzhinov@gmail.com"]
   s.homepage    = ""
@@ -14,6 +16,7 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency "launchy"
   s.add_runtime_dependency 'thor'
+  s.add_runtime_dependency 'os'
   s.add_development_dependency "rspec", "~>2.5.0"
 
   s.files         = `git ls-files`.split("\n")
