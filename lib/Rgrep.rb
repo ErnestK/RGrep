@@ -71,28 +71,24 @@ class Rgrep < Thor
 		file1[:lines] = file1[:io_file].readlines
 		file2[:lines] = file2[:io_file].readlines
 
-		cnt = 0
-		puts "File: #{_file1}"
-		file1[:lines].each do |line|
-			cnt = cnt + 1
-			if options[:show_similar]
-				puts cnt.to_s + ' ' + line if file2[:lines].include?( line)
-			else
-				puts cnt.to_s + ' ' + line unless file2[:lines].include?( line)
+		find_lines =  lambda do |object1, object2|
+			cnt = 0
+			object1.each do |line|
+				cnt = cnt + 1
+				if options[:show_similar]
+					puts cnt.to_s + ' ' + line if object2.include?( line)
+				else
+					puts cnt.to_s + ' ' + line unless object2.include?( line)
+				end
 			end
 		end
 
-		cnt = 0
+		puts "File: #{_file1}"
+		find_lines.call(file1[:lines], file2[:lines])
+
 		puts "**************************************"
 		puts "File: #{_file2}"
-		file2[:lines].each do |line|
-			cnt = cnt + 1      
-			if options[:show_similar]
-				puts cnt.to_s + ' ' + line if file1[:lines].include?( line)
-			else
-				puts cnt.to_s + ' ' + line unless file1[:lines].include?( line)
-			end
-		end
+		find_lines.call(file2[:lines], file1[:lines])
 
 		# CLI commands should return 0 if command finished succesful, and -1 if failed
 		return 0
@@ -133,7 +129,7 @@ class Rgrep < Thor
 		return -1
 	end
 
-  private
+	private
 	def incr_search( path)
 		if OS.windows?
 			path = path[-1,1] == '\\' ? path : path + '\\'   # for Win
